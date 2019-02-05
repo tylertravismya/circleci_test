@@ -1,10 +1,10 @@
 version: 2
-jobs:
-  build_test_deploy:
+jobs: 
+  build_test_deploy: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/demo
     # The primary container is an instance of the first image listed. The job's commands run in this container.
-    docker:
-      - image: circleci/openjdk:8-jdk-stretch-node-browsers-legacy
+    docker: # run the steps with Docke
+      - image: circleci/openjdk:8-jdk-browsers
     # The secondary container is an instance of the second listed image which is 
     # run in a common network where ports exposed on the primary container are available on localhost.
       - image: mysql:5.7
@@ -13,10 +13,13 @@ jobs:
             MYSQL_ROOT_PASSWORD: ''
             MYSQL_DATABASE: circleci
     steps:
-      - checkout
-      - run:
-          name: maven deploy
-          command: 'sudo mvn deploy'
+      - checkout # check out source code to working directory
+
+      - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+      
+      - run: mvn dependency:go-offline deploy # gets the project dependencies
 
 workflows:
   version: 2
