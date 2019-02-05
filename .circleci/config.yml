@@ -1,10 +1,10 @@
 version: 2
 jobs:
   build_test_deploy:
-    working_directory: ~/${workingDir)
+    working_directory: ~/$demo
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
-      - image: circleci/openjdk:8-jdk-stretch-node-browsers-legacy-jessie
+      - image: circleci/openjdk:8-jdk-stretch-node-browsers-legacy
     # The secondary container is an instance of the second listed image which is 
     # run in a common network where ports exposed on the primary container are available on localhost.
       - image: mysql:5.7-jessie
