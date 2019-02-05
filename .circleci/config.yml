@@ -10,8 +10,8 @@ jobs:
       - image: mysql:5.7
       environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: 'letmein2'
-          MYSQL_DATABASE: 'demo'
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: circleci
     steps:
       - checkout
       - run:
