@@ -1,8 +1,22 @@
 version: 2
 jobs:
-  build:
+  build_test_deploy:
+    working_directory: ~/${workingDir)
+    # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: circleci/openjdk:8-jdk-stretch-node-browsers-legacy-jessie
+    # The secondary container is an instance of the second listed image which is 
+    # run in a common network where ports exposed on the primary container are available on localhost.
+      - image: mysql:5.7-jessie
     steps:
       - checkout
-      - run: echo "A first hello"
+      - run:
+          name: maven deploy
+          command: 'sudo mvn deploy'
+
+workflows:
+  version: 2
+  what_to_do:
+    jobs:
+      - build_test_deploy
+
